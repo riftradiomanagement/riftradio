@@ -81,6 +81,17 @@ body{
   100%{transform:scale(1);opacity:1;}
 }
 
+  /* Spotify Embed */
+.spotify-embed{
+  margin: 1.5rem 0;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+.spotify-embed iframe{
+  border-radius:16px;
+}
+
 /* Footer */
 footer{position:absolute;bottom:1rem;width:100%;text-align:center;font-size:0.85rem;opacity:0.4;z-index:1;}
 
