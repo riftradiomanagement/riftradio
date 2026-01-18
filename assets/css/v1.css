@@ -140,5 +140,34 @@ footer {
   .glass {
     padding: 2.4rem 2rem;
   }
+
+  /* =====================
+   CUSTOM PLAY BUTTON
+===================== */
+.play-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.12),
+    0 0 25px rgba(76,255,155,0.35);
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.play-btn:hover {
+  transform: scale(1.08);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.2),
+    0 0 40px rgba(76,255,155,0.6);
+}
+
+.play-btn:active {
+  transform: scale(0.95);
+  }
 }
 
