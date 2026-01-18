@@ -1,92 +1,114 @@
-/* Reset */
+/* =====================
+   RESET
+===================== */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
-/* Body with animated shiny black background */
+/* =====================
+   PAGE BACKGROUND
+===================== */
 body {
   height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background: linear-gradient(135deg, #111111, #1a1a1a, #111111);
-  background-size: 400% 400%;
-  animation: gradientAnimation 15s ease infinite;
-  color: #eaeaf0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(
+    circle at top,
+    #1c1c1c,
+    #0b0b0b 60%
+  );
+  color: #ffffff;
+  overflow: hidden;
 }
 
-/* Gradient animation */
-@keyframes gradientAnimation {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Center glass box */
-.center-box {
-  background: rgba(255, 255, 255, 0.05); /* glass effect */
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-radius: 20px;
-  padding: 2rem;
-  width: 350px;
+/* =====================
+   GLASS CONTAINER
+===================== */
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 24px;
+  padding: 2.5rem;
+  width: 360px;
   max-width: 90%;
   text-align: center;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   animation: fadeIn 1s ease;
 }
 
-/* Fade-in animation for modern look */
+/* Fade-in animation */
 @keyframes fadeIn {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Heading and paragraph in center box */
-.center-box h1 {
+/* =====================
+   TEXT
+===================== */
+.glass h1 {
+  font-size: 2.2rem;
   margin-bottom: 0.5rem;
-  font-size: 2rem;
-  color: #ffffff;
+  letter-spacing: 0.5px;
 }
 
-.center-box p {
-  margin-bottom: 1.5rem;
-  opacity: 0.8;
+.glass p {
   font-size: 1rem;
+  opacity: 0.75;
+  margin-bottom: 2rem;
 }
 
-/* Footer */
+/* =====================
+   PLAYER PLACEHOLDER
+===================== */
+.player-placeholder {
+  height: 140px;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.02)
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* =====================
+   FOOTER
+===================== */
 footer {
-  text-align: center;
-  opacity: 0.6;
-  margin-top: 2rem;
   position: absolute;
   bottom: 1rem;
   width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.5;
 }
 
-/* Responsive iframe (AzuraCast) */
-iframe {
-  border-radius: 12px;
-  max-width: 100%;
-}
-
-/* Mobile adjustments */
-@media (max-width: 400px) {
-  .center-box {
-    padding: 1.5rem;
-    width: 90%;
+/* =====================
+   MOBILE TWEAKS
+===================== */
+@media (max-width: 420px) {
+  .glass {
+    padding: 2rem 1.5rem;
   }
 
-  .center-box h1 {
-    font-size: 1.6rem;
-  }
-
-  .center-box p {
-    font-size: 0.9rem;
+  .glass h1 {
+    font-size: 1.8rem;
   }
 }
