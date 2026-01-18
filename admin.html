@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin - Rift Radio Status</title>
+  <link rel="stylesheet" href="assets/css/v1.css" />
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #0a0a0a;
+    }
+
+    .admin-glass {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(18px);
+      border-radius: 28px;
+      padding: 2.5rem;
+      width: 360px;
+      text-align: center;
+      box-shadow:
+        0 10px 40px rgba(0,0,0,0.6),
+        inset 0 0 0 1px rgba(255,255,255,0.08);
+    }
+
+    select, input[type="color"], button {
+      margin-top: 1rem;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+
+    button {
+      cursor: pointer;
+      background: var(--neon);
+      color: #000;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-glass">
+    <h2>Status Control</h2>
+    <label for="presetStatus">Choose Status:</label>
+    <select id="presetStatus">
+      <option value="">--Select--</option>
+      <option value="Live|#4cff9b">Live</option>
+      <option value="Offline|#ff3b3b">Offline</option>
+      <option value="Maintenance|#ffae42">Maintenance</option>
+    </select>
+
+    <p>Or set custom:</p>
+    <input type="text" id="customStatus" placeholder="Custom status" />
+    <input type="color" id="customColor" value="#ffffff" />
+
+    <br/>
+    <button id="saveStatus">Save Status</button>
+  </div>
+
+  <script>
+    const presetSelect = document.getElementById("presetStatus");
+    const customStatus = document.getElementById("customStatus");
+    const customColor = document.getElementById("customColor");
+    const saveBtn = document.getElementById("saveStatus");
+
+    saveBtn.addEventListener("click", () => {
+      let text, color;
+
+      if (presetSelect.value) {
+        [text, color] = presetSelect.value.split("|");
+      } else if (customStatus.value) {
+        text = customStatus.value;
+        color = customColor.value;
+      } else {
+        alert("Please select or enter a status");
+        return;
+      }
+
+      localStorage.setItem("radioStatus", JSON.stringify({ text, color }));
+      alert(`Status updated: ${text}`);
+    });
+  </script>
+</body>
+</html>
