@@ -13,13 +13,15 @@
   --border:rgba(255,255,255,0.1);
   --neon-color:#4cff9b;
 }
-body[data-theme="dark"] {
-  background: radial-gradient(circle at top,#1a1a1a,var(--bg-dark) 65%);
-  color:#fff;
-}
+body[data-theme="dark"],
 body[data-theme="light"] {
-  background: radial-gradient(circle at top,#ddd,#f4f4f4 65%);
-  color:#000;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative; /* needed for .ambient */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* =====================
