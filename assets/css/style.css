@@ -1,0 +1,88 @@
+/* RESET & VARIABLES */
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --glass:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.1);
+  --neon-color:#4cff9b;
+}
+
+body{
+  height: 100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+  position:relative;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top,#1a1a1a,#060606 65%);
+  color:#fff;
+}
+
+/* Ambient background */
+.ambient{
+  position:absolute;
+  width:800px;
+  height:800px;
+  background:radial-gradient(circle,rgba(76,255,155,0.09),transparent 70%);
+  filter:blur(150px);
+  animation:drift 25s ease-in-out infinite;
+  z-index:0;
+}
+@keyframes drift{
+  0%{transform:translate(-250px,-150px);}
+  50%{transform:translate(250px,150px);}
+  100%{transform:translate(-250px,-150px);}
+}
+
+/* Glass container */
+.glass{
+  position:relative;
+  z-index:1;
+  background:var(--glass);
+  backdrop-filter:blur(22px);
+  border-radius:32px;
+  padding:3rem;
+  width:420px;
+  max-width:90%;
+  text-align:center;
+  box-shadow:0 30px 80px rgba(0,0,0,0.75), inset 0 0 0 1px var(--border);
+}
+
+/* Branding */
+.brand{font-size:2.4rem;letter-spacing:0.6px;margin-bottom:0.4rem;}
+.tagline{font-size:1rem;opacity:0.75;margin-bottom:2rem;}
+
+/* Player */
+.player{margin-bottom:1.6rem;}
+.play-btn{
+  width:80px;height:80px;border-radius:50%;border:none;
+  background:rgba(255,255,255,0.08);color:var(--neon-color);
+  font-size:1.8rem;cursor:pointer;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.12),0 0 25px var(--neon-color);
+  transition:transform 0.2s ease, box-shadow 0.3s ease;
+}
+.play-btn:hover{transform:scale(1.08);box-shadow:0 0 0 1px rgba(255,255,255,0.2),0 0 40px var(--neon-color);}
+.play-btn:active{transform:scale(0.95);}
+
+/* Status */
+.status{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  padding:0.7rem 1.4rem;border-radius:999px;font-size:0.9rem;
+  background:rgba(255,255,255,0.08);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.12);
+}
+.pulse{
+  width:9px;height:9px;background:var(--neon-color);
+  border-radius:50%;box-shadow:0 0 14px var(--neon-color);
+  animation:pulse 1.6s infinite;
+}
+@keyframes pulse{
+  0%{transform:scale(1);opacity:1;}
+  50%{transform:scale(1.7);opacity:0.5;}
+  100%{transform:scale(1);opacity:1;}
+}
+
+/* Footer */
+footer{position:absolute;bottom:1rem;width:100%;text-align:center;font-size:0.85rem;opacity:0.4;z-index:1;}
+
+/* Mobile */
+@media(max-width:420px){.glass{padding:2.4rem 2rem;}.play-btn{width:70px;height:70px;}}
