@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Rift Radio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
-  <!-- Firebase -->
+  <!-- Firebase v8 -->
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
@@ -22,24 +22,24 @@
       <!-- STATUS -->
       <div class="status">
         <span id="statusDot"></span>
-        <span id="statusText">Loading…</span>
+        <span id="statusText">Loading status…</span>
       </div>
 
-      <!-- COVER -->
+      <!-- COVER + PLAY -->
       <div class="cover" id="cover">
         <button id="playBtn">▶</button>
       </div>
 
       <!-- INFO -->
       <div class="info">
-        <h2 id="trackTitle">Waiting for stream…</h2>
+        <h2 id="trackTitle">Not Playing</h2>
         <p>Rift Radio</p>
       </div>
 
     </div>
   </div>
 
-  <!-- Hidden YouTube -->
+  <!-- Hidden YouTube player -->
   <div id="yt-player"></div>
 
   <script src="main.js"></script>
