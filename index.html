@@ -1,22 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rift Radio</title>
-  <link rel="stylesheet" href="assets/css/v2.css" />
-</head>
-<body data-theme="dark">
-
-  <!-- Ambient background -->
+<body>
   <div class="ambient"></div>
 
-  <!-- Main glass container -->
   <main class="glass">
     <h1 class="brand">Rift Radio</h1>
     <p class="tagline">Independent sounds. Always on.</p>
 
-    <!-- Audio Player -->
     <div class="player">
       <button id="playBtn" class="play-btn">▶</button>
       <audio id="radioPlayer" preload="none">
@@ -24,7 +12,6 @@
       </audio>
     </div>
 
-    <!-- Status Section -->
     <div class="status">
       <span id="statusDot" class="pulse"></span>
       <span id="statusText">Offline</span>
@@ -33,9 +20,7 @@
 
   <footer>© 2026 Rift Radio</footer>
 
-  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
   <script src="assets/js/v2.js"></script>
 </body>
-</html>
