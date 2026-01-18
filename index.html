@@ -1,42 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Rift Radio</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
-  <!-- Ambient background -->
-  <div class="ambient"></div>
+  <main class="app">
+    <section class="player">
 
-  <main class="glass">
-    <h1 class="brand">Rift Radio</h1>
-    <p class="tagline">Music for every occasion.</p>
-
-    <!-- Custom Spotify-style Player -->
-    <div class="spotify-player">
-      <div class="cover" id="coverArt"></div>
-      <button id="spotifyPlayBtn" class="play-btn">▶</button>
-      <div class="track-info">
-        <span id="trackTitle">Song Name</span><br>
-        <span id="trackArtist">Artist Name</span>
+      <div class="cover">
+        <button id="playBtn">▶</button>
       </div>
-    </div>
 
-    <!-- Status Section -->
-    <div class="status">
-      <span id="statusDot" class="pulse"></span>
-      <span id="statusText">Offline</span>
-    </div>
+      <div class="info">
+        <h1 id="trackTitle">Waiting for playlist…</h1>
+        <p class="subtitle">Live Radio</p>
+      </div>
+
+    </section>
   </main>
 
-  <footer>© 2026 Rift Radio</footer>
+  <!-- Hidden YouTube player -->
+  <div id="yt-player"></div>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="assets/js/main.js"></script>
+  <!-- Script -->
+  <script src="main.js"></script>
 </body>
 </html>
