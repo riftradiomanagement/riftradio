@@ -1,12 +1,12 @@
 // ====== Firebase Config ======
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBu7U9DL_eaMd17TqGYBKRs5FYK-qZN3W8",
+  authDomain: "riftradio-261b2.firebaseapp.com",
+  databaseURL: "https://riftradio-261b2.firebaseio.com",
+  projectId: "riftradio-261b2",
+  storageBucket: "riftradio-261b2.appspot.com",
+  messagingSenderId: "1090281308108",
+  appId: "1:1090281308108:web:fda907d270875dcb3ae769"
 };
 
 // Initialize Firebase
