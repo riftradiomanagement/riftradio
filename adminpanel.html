@@ -13,6 +13,7 @@
   <main class="glass" id="adminPanel" style="display:none;">
     <h1>Admin Panel</h1>
 
+    <!-- Status Control -->
     <label for="presetStatus">Preset Status:</label>
     <select id="presetStatus">
       <option value="">--Select--</option>
@@ -24,9 +25,19 @@
     <p>Or custom:</p>
     <input type="text" id="customStatus" placeholder="Custom status" />
     <input type="color" id="customColor" value="#ffffff" />
-
     <br/>
     <button id="saveStatus">Save Status</button>
+
+    <hr>
+
+    <!-- Spotify Track Control -->
+    <h2>Spotify Player Control</h2>
+    <input type="text" id="trackName" placeholder="Song Name" />
+    <input type="text" id="trackArtist" placeholder="Artist Name" />
+    <input type="text" id="trackCover" placeholder="Cover Image URL" />
+    <br/>
+    <button id="saveTrack">Update Track</button>
+    <button id="togglePlay">Play / Pause</button>
   </main>
 
   <!-- Firebase -->
@@ -35,3 +46,4 @@
   <script src="assets/js/main.js"></script>
 </body>
 </html>
+
