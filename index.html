@@ -15,7 +15,7 @@
     <h1 class="brand">Rift Radio</h1>
     <p class="tagline">Independent sounds. Always on.</p>
 
-    <!-- Audio Player -->
+    <!-- Radio Player -->
     <div class="player">
       <button id="playBtn" class="play-btn">▶</button>
       <audio id="radioPlayer" preload="none">
@@ -23,18 +23,22 @@
       </audio>
     </div>
 
+    <!-- Spotify Embed -->
+    <div class="spotify-embed">
+      <iframe
+        src=https://open.spotify.com/embed/playlist/1W7MCOJ29ni4KXyg5SXHNS?si=_O8dzjBOS2enR2CWrcHfPg
+        height="80"
+        frameborder="0"
+        allowtransparency="true"
+        allow="encrypted-media"
+      ></iframe>
+    </div>
+
     <!-- Status Section -->
     <div class="status">
       <span id="statusDot" class="pulse"></span>
       <span id="statusText">Offline</span>
     </div>
-  </main>
 
-  <footer>© 2026 Rift Radio</footer>
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="assets/js/main.js"></script>
-</body>
-</html>
+    <!-- Current Spotify Track Info -->
+    <div class="current-track" id="currentTrack">
