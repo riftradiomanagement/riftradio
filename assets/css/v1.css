@@ -1,0 +1,181 @@
+/* =====================
+   RESET
+===================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =====================
+   ROOT
+===================== */
+:root {
+  --bg-dark: #060606;
+  --glass: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.08);
+  --neon: #4cff9b;
+}
+
+/* =====================
+   PAGE
+===================== */
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, var(--bg-dark) 65%);
+  color: white;
+  overflow: hidden;
+  position: relative;
+}
+
+/* =====================
+   AMBIENT BACKGROUND
+===================== */
+.ambient {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(circle, rgba(76,255,155,0.08), transparent 70%);
+  filter: blur(140px);
+  animation: drift 22s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%   { transform: translate(-200px, -120px); }
+  50%  { transform: translate(200px, 120px); }
+  100% { transform: translate(-200px, -120px); }
+}
+
+/* =====================
+   GLASS CARD
+===================== */
+.glass {
+  position: relative;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px;
+  padding: 3rem;
+  width: 400px;
+  max-width: 92%;
+  text-align: center;
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.75),
+    inset 0 0 0 1px var(--border);
+  animation: rise 1.2s ease;
+}
+
+/* Neon glow on hover */
+.glass::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: 0 0 40px rgba(76, 255, 155, 0.35);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.glass:hover::after {
+  opacity: 1;
+}
+
+/* Entrance animation */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =====================
+   SKELETON PLACEHOLDERS
+===================== */
+.skeleton {
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0.12)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  from { background-position: 0% 0; }
+  to   { background-position: -200% 0; }
+}
+
+.title {
+  height: 28px;
+  width: 60%;
+  margin: 0 auto 0.75rem;
+}
+
+.line {
+  height: 14px;
+  width: 85%;
+  margin: 0 auto 2.5rem;
+}
+
+/* =====================
+   STATUS PILL
+===================== */
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  opacity: 0.9;
+}
+
+/* Pulse dot */
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--neon);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(76, 255, 155, 0.9);
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.7); opacity: 0.5; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* =====================
+   FOOTER
+===================== */
+footer {
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.4;
+}
+
+/* =====================
+   MOBILE
+===================== */
+@media (max-width: 420px) {
+  .glass {
+    padding: 2.4rem 2rem;
+  }
+}
