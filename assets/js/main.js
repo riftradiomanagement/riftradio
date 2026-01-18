@@ -13,121 +13,138 @@ appId: "1:1090281308108:web:fda907d270875dcb3ae769"
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-document.addEventListener("DOMContentLoaded", () => {
-  // -------------------- RADIO PLAYER --------------------
-  const player = document.getElementById("radioPlayer");
+/* ========== SHARED STATE ========== */
+
+let player = null;
+let isPlaying = false;
+
+/* ========== YOUTUBE PLAYER ========== */
+
+function onYouTubeIframeAPIReady() {
+  const ytContainer = document.getElementById("yt-player");
+  if (!ytContainer) return; // admin page safety
+
+  player = new YT.Player("yt-player", {
+    height: "1",
+    width: "1",
+    playerVars: {
+      listType: "playlist",
+      list: PLAYLIST_ID,
+      autoplay: 0,
+      controls: 0,
+      modestbranding: 1,
+      rel: 0,
+      fs: 0
+    },
+    events: {
+      onStateChange: onPlayerStateChange
+    }
+  });
+}
+
+function onPlayerStateChange(event) {
   const playBtn = document.getElementById("playBtn");
-  let playing=false;
+  const titleEl = document.getElementById("trackTitle");
 
-  if(playBtn && player){
+  if (!playBtn || !titleEl) return;
+
+  if (event.data === YT.PlayerState.PLAYING) {
+    isPlaying = true;
+    playBtn.textContent = "❚❚";
+    titleEl.textContent =
+      player.getVideoData().title || "Now Playing";
+  }
+
+  if (event.data === YT.PlayerState.PAUSED) {
+    isPlaying = false;
+    playBtn.textContent = "▶";
+  }
+
+  if (event.data === YT.PlayerState.ENDED) {
+    isPlaying = false;
+    playBtn.textContent = "▶";
+  }
+}
+
+/* ========== MAIN PAGE UI ========== */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  /* --- Play Button --- */
+  const playBtn = document.getElementById("playBtn");
+  if (playBtn) {
     playBtn.addEventListener("click", () => {
-      if(!playing){ player.play(); playBtn.textContent="❚❚"; playing=true; }
-      else { player.pause(); playBtn.textContent="▶"; playing=false; }
+      if (!player) return;
+      isPlaying ? player.pauseVideo() : player.playVideo();
     });
   }
 
-  // -------------------- STATUS --------------------
-  const statusDot=document.getElementById("statusDot");
-  const statusText=document.getElementById("statusText");
+  /* --- STATUS LISTENER --- */
+  const statusText = document.getElementById("statusText");
+  const statusDot = document.getElementById("statusDot");
 
-  if(statusDot && statusText){
+  if (statusText && statusDot) {
     db.ref("status").on("value", snap => {
-      const data=snap.val();
-      if(data){
-        const { text, color } = data;
-        statusText.textContent=text;
-        statusDot.style.backgroundColor=color;
-        statusDot.style.boxShadow=`0 0 12px ${color}`;
-        document.documentElement.style.setProperty('--neon-color', color);
-      }
+      const data = snap.val();
+      if (!data) return;
+
+      statusText.textContent = data.text;
+      statusDot.style.background = data.color;
+      statusDot.style.boxShadow = `0 0 15px ${data.color}`;
     });
   }
 
-  // -------------------- SPOTIFY PLAYER --------------------
-  const spotifyPlayBtn = document.getElementById("spotifyPlayBtn");
-  const trackTitle = document.getElementById("trackTitle");
-  const trackArtist = document.getElementById("trackArtist");
-  const coverArt = document.getElementById("coverArt");
+  /* --- ADMIN PAGE LOGIC --- */
+  setupAdminPanel();
 
-  // Fake audio object for demonstration (replace with actual Spotify Web Playback SDK if desired)
-  const spotifyPlayer = new Audio();
-  
-  // Listen for track updates from Firebase
-  db.ref("spotify/currentTrack").on("value", snap=>{
-    const data = snap.val();
-    if(data){
-      trackTitle.textContent = data.song;
-      trackArtist.textContent = data.artist;
-      coverArt.style.backgroundImage = `url(${data.cover})`;
+});
 
-      spotifyPlayer.src = data.audioSrc || ""; // optional: custom audio file
+/* ========== ADMIN PANEL ========== */
 
-      if(data.playing) { spotifyPlayer.play(); spotifyPlayBtn.textContent="❚❚"; }
-      else { spotifyPlayer.pause(); spotifyPlayBtn.textContent="▶"; }
+function setupAdminPanel() {
+
+  const passwordInput = document.getElementById("adminPassword");
+  const loginBtn = document.getElementById("loginBtn");
+  if (!passwordInput || !loginBtn) return; // not admin page
+
+  const statusPreset = document.getElementById("statusPreset");
+  const customStatus = document.getElementById("customStatus");
+  const statusColor = document.getElementById("statusColor");
+  const updateBtn = document.getElementById("updateStatusBtn");
+
+  let authenticated = false;
+
+  /* --- LOGIN --- */
+  loginBtn.addEventListener("click", async () => {
+    const entered = passwordInput.value;
+
+    const snap = await db.ref("status/adminKey").get();
+    if (snap.val() === entered) {
+      authenticated = true;
+      document.body.classList.add("admin-auth");
+      alert("Admin access granted");
+    } else {
+      alert("Incorrect password");
     }
   });
 
-  // Play/pause button updates Firebase
-  if(spotifyPlayBtn){
-    spotifyPlayBtn.addEventListener("click", ()=>{
-      db.ref("spotify/currentTrack").once("value").then(snap=>{
-        const data=snap.val();
-        db.ref("spotify/currentTrack").update({ playing: !data.playing });
-      });
+  /* --- UPDATE STATUS --- */
+  updateBtn.addEventListener("click", () => {
+    if (!authenticated) {
+      alert("Not authenticated");
+      return;
+    }
+
+    let text =
+      statusPreset.value === "custom"
+        ? customStatus.value
+        : statusPreset.value;
+
+    if (!text) text = "Live";
+
+    db.ref("status").update({
+      text,
+      color: statusColor.value
     });
-  }
-
-  // -------------------- ADMIN PANEL --------------------
-  const adminPanel=document.getElementById("adminPanel");
-  if(adminPanel){
-    function askAdminKey(){
-      const key = prompt("Enter Admin Key:");
-      if(key===null) return;
-
-      db.ref("status/adminKey").once("value").then(snap=>{
-        if(key===snap.val()){ adminPanel.style.display="block"; setupAdminControls(); }
-        else{ alert("Incorrect key"); askAdminKey(); }
-      });
-    }
-
-    function setupAdminControls(){
-      const presetSelect=document.getElementById("presetStatus");
-      const customStatus=document.getElementById("customStatus");
-      const customColor=document.getElementById("customColor");
-      const saveBtn=document.getElementById("saveStatus");
-
-      saveBtn.addEventListener("click", ()=>{
-        let text,color;
-        if(presetSelect.value){ [text,color]=presetSelect.value.split("|"); }
-        else if(customStatus.value){ text=customStatus.value; color=customColor.value; }
-        else{ alert("Select or enter status"); return; }
-        db.ref("status").update({ text,color });
-        alert(`Status updated: ${text}`);
-      });
-
-      // Spotify controls
-      const trackName=document.getElementById("trackName");
-      const trackArtist=document.getElementById("trackArtist");
-      const trackCover=document.getElementById("trackCover");
-      const saveTrack=document.getElementById("saveTrack");
-      const togglePlay=document.getElementById("togglePlay");
-
-      saveTrack.addEventListener("click", ()=>{
-        const song=trackName.value || "Unknown Song";
-        const artist=trackArtist.value || "Unknown Artist";
-        const cover=trackCover.value || "";
-        db.ref("spotify/currentTrack").update({ song, artist, cover });
-        alert("Spotify track updated!");
-      });
-
-      togglePlay.addEventListener("click", ()=>{
-        db.ref("spotify/currentTrack").once("value").then(snap=>{
-          const data=snap.val();
-          db.ref("spotify/currentTrack").update({ playing: !data.playing });
-        });
-      });
-    }
-
-    askAdminKey();
-  }
-});
+  });
+}
