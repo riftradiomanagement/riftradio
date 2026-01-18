@@ -12,139 +12,106 @@ appId: "1:1090281308108:web:fda907d270875dcb3ae769"
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+let player, isPlaying = false;
 
-/* ========== SHARED STATE ========== */
+// DEFAULT PLACEHOLDER
+let playlistId = "YOUR_PLAYLIST_ID_HERE";
 
-let player = null;
-let isPlaying = false;
-
-/* ========== YOUTUBE PLAYER ========== */
-
+/* ===== YOUTUBE ===== */
 function onYouTubeIframeAPIReady() {
-  const ytContainer = document.getElementById("yt-player");
-  if (!ytContainer) return; // admin page safety
-
   player = new YT.Player("yt-player", {
     height: "1",
     width: "1",
     playerVars: {
       listType: "playlist",
-      list: PLAYLIST_ID,
-      autoplay: 0,
-      controls: 0,
-      modestbranding: 1,
-      rel: 0,
-      fs: 0
+      list: playlistId,
+      controls: 0
     },
-    events: {
-      onStateChange: onPlayerStateChange
-    }
+    events: { onStateChange }
   });
 }
 
-function onPlayerStateChange(event) {
+function onStateChange(e) {
+  const title = document.getElementById("trackTitle");
+  const cover = document.getElementById("cover");
   const playBtn = document.getElementById("playBtn");
-  const titleEl = document.getElementById("trackTitle");
 
-  if (!playBtn || !titleEl) return;
-
-  if (event.data === YT.PlayerState.PLAYING) {
+  if (e.data === YT.PlayerState.PLAYING) {
     isPlaying = true;
     playBtn.textContent = "❚❚";
-    titleEl.textContent =
-      player.getVideoData().title || "Now Playing";
+
+    const data = player.getVideoData();
+    title.textContent = data.title;
+
+    cover.style.backgroundImage =
+      `url(https://img.youtube.com/vi/${data.video_id}/hqdefault.jpg)`;
   }
 
-  if (event.data === YT.PlayerState.PAUSED) {
-    isPlaying = false;
-    playBtn.textContent = "▶";
-  }
-
-  if (event.data === YT.PlayerState.ENDED) {
+  if (e.data === YT.PlayerState.PAUSED) {
     isPlaying = false;
     playBtn.textContent = "▶";
   }
 }
 
-/* ========== MAIN PAGE UI ========== */
-
+/* ===== PLAY BUTTON ===== */
 document.addEventListener("DOMContentLoaded", () => {
-
-  /* --- Play Button --- */
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
-    playBtn.addEventListener("click", () => {
-      if (!player) return;
+    playBtn.onclick = () =>
       isPlaying ? player.pauseVideo() : player.playVideo();
-    });
   }
 
-  /* --- STATUS LISTENER --- */
-  const statusText = document.getElementById("statusText");
-  const statusDot = document.getElementById("statusDot");
-
-  if (statusText && statusDot) {
-    db.ref("status").on("value", snap => {
-      const data = snap.val();
-      if (!data) return;
-
-      statusText.textContent = data.text;
-      statusDot.style.background = data.color;
-      statusDot.style.boxShadow = `0 0 15px ${data.color}`;
-    });
-  }
-
-  /* --- ADMIN PAGE LOGIC --- */
-  setupAdminPanel();
-
-});
-
-/* ========== ADMIN PANEL ========== */
-
-function setupAdminPanel() {
-
-  const passwordInput = document.getElementById("adminPassword");
-  const loginBtn = document.getElementById("loginBtn");
-  if (!passwordInput || !loginBtn) return; // not admin page
-
-  const statusPreset = document.getElementById("statusPreset");
-  const customStatus = document.getElementById("customStatus");
-  const statusColor = document.getElementById("statusColor");
-  const updateBtn = document.getElementById("updateStatusBtn");
-
-  let authenticated = false;
-
-  /* --- LOGIN --- */
-  loginBtn.addEventListener("click", async () => {
-    const entered = passwordInput.value;
-
-    const snap = await db.ref("status/adminKey").get();
-    if (snap.val() === entered) {
-      authenticated = true;
-      document.body.classList.add("admin-auth");
-      alert("Admin access granted");
-    } else {
-      alert("Incorrect password");
-    }
+  /* ===== STATUS SYNC ===== */
+  db.ref("status").on("value", s => {
+    const d = s.val();
+    if (!d) return;
+    statusText.textContent = d.text;
+    statusDot.style.background = d.color;
+    statusDot.style.boxShadow = `0 0 12px ${d.color}`;
   });
 
-  /* --- UPDATE STATUS --- */
-  updateBtn.addEventListener("click", () => {
-    if (!authenticated) {
-      alert("Not authenticated");
-      return;
-    }
+  setupAdmin();
+  setupKeyboard();
+});
 
-    let text =
+/* ===== KEYBOARD SHORTCUTS ===== */
+function setupKeyboard() {
+  document.addEventListener("keydown", e => {
+    if (e.code === "Space") {
+      e.preventDefault();
+      isPlaying ? player.pauseVideo() : player.playVideo();
+    }
+    if (e.code === "ArrowRight") {
+      player.nextVideo();
+    }
+  });
+}
+
+/* ===== ADMIN ===== */
+function setupAdmin() {
+  const loginBtn = document.getElementById("loginBtn");
+  if (!loginBtn) return;
+
+  loginBtn.onclick = async () => {
+    const pass = adminPassword.value;
+    const snap = await db.ref("status/adminKey").get();
+    if (snap.val() === pass) alert("Admin unlocked");
+  };
+
+  updateStatusBtn.onclick = () => {
+    const text =
       statusPreset.value === "custom"
         ? customStatus.value
         : statusPreset.value;
-
-    if (!text) text = "Live";
 
     db.ref("status").update({
       text,
       color: statusColor.value
     });
-  });
-}
+  };
+
+  updatePlaylistBtn.onclick = () => {
+    playlistId = playlistInput.value;
+    db.ref("playlist").set({ id: playlistId });
+    location.reload();
+  };
