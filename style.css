@@ -8,7 +8,7 @@
 }
 
 /* =====================
-   PAGE BACKGROUND
+   BASE LAYOUT
 ===================== */
 body {
   height: 100vh;
@@ -16,38 +16,58 @@ body {
   justify-content: center;
   align-items: center;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  background:
-    radial-gradient(circle at top, #1f1f1f, #0a0a0a 60%),
-    linear-gradient(135deg, #000000, #141414);
+  background: radial-gradient(circle at top, #1a1a1a, #070707 65%);
   color: #ffffff;
   overflow: hidden;
+  position: relative;
+}
+
+/* =====================
+   AMBIENT BACKGROUND GLOW
+===================== */
+.ambient-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.08),
+    transparent 70%
+  );
+  filter: blur(120px);
+  animation: floatGlow 18s ease-in-out infinite;
+}
+
+@keyframes floatGlow {
+  0%   { transform: translate(-120px, -80px); }
+  50%  { transform: translate(120px, 80px); }
+  100% { transform: translate(-120px, -80px); }
 }
 
 /* =====================
    GLASS CONTAINER
 ===================== */
 .glass {
-  background: rgba(255, 255, 255, 0.06);
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-radius: 26px;
-  padding: 2.75rem 2.5rem;
+  border-radius: 28px;
+  padding: 3rem 2.75rem;
   width: 380px;
   max-width: 92%;
   text-align: center;
   box-shadow:
-    0 15px 45px rgba(0, 0, 0, 0.7),
+    0 20px 60px rgba(0, 0, 0, 0.7),
     inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   animation: fadeUp 1.2s ease;
 }
 
-/* =====================
-   ANIMATIONS
-===================== */
+/* Entrance animation */
 @keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -56,28 +76,37 @@ body {
 }
 
 /* =====================
-   TEXT
+   PLACEHOLDER CONTENT
 ===================== */
-.glass h1 {
-  font-size: 2.4rem;
-  letter-spacing: 0.6px;
-  margin-bottom: 0.5rem;
+.placeholder-title {
+  height: 28px;
+  width: 65%;
+  margin: 0 auto 0.75rem;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.12),
+    rgba(255,255,255,0.04),
+    rgba(255,255,255,0.12)
+  );
 }
 
-.tagline {
-  font-size: 1rem;
-  opacity: 0.75;
-  margin-bottom: 2.25rem;
+.placeholder-line {
+  height: 14px;
+  width: 85%;
+  margin: 0 auto 2.5rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* =====================
-   STATUS PILL
+   STATUS INDICATOR
 ===================== */
 .status {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  padding: 0.6rem 1.2rem;
+  padding: 0.65rem 1.3rem;
   border-radius: 999px;
   font-size: 0.9rem;
   background: rgba(255, 255, 255, 0.08);
@@ -85,19 +114,19 @@ body {
   opacity: 0.85;
 }
 
-/* Animated dot */
+/* Pulsing dot */
 .dot {
   width: 8px;
   height: 8px;
   background: #4cff9b;
   border-radius: 50%;
-  box-shadow: 0 0 8px rgba(76, 255, 155, 0.8);
-  animation: pulse 1.5s infinite;
+  box-shadow: 0 0 10px rgba(76, 255, 155, 0.9);
+  animation: pulse 1.6s infinite;
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.5); opacity: 0.6; }
+  0%   { transform: scale(1); opacity: 1; }
+  50%  { transform: scale(1.6); opacity: 0.5; }
   100% { transform: scale(1); opacity: 1; }
 }
 
@@ -110,7 +139,7 @@ footer {
   width: 100%;
   text-align: center;
   font-size: 0.85rem;
-  opacity: 0.45;
+  opacity: 0.4;
 }
 
 /* =====================
@@ -118,10 +147,6 @@ footer {
 ===================== */
 @media (max-width: 420px) {
   .glass {
-    padding: 2.2rem 1.8rem;
-  }
-
-  .glass h1 {
-    font-size: 2rem;
+    padding: 2.3rem 1.9rem;
   }
 }
