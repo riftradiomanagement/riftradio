@@ -2,7 +2,7 @@
 const firebaseConfig = { 
 apiKey: "AIzaSyBu7U9DL_eaMd17TqGYBKRs5FYK-qZN3W8", 
 authDomain: "riftradio-261b2.firebaseapp.com", 
-databaseURL: "https://riftradio-261b2.firebaseio.com", 
+databaseURL: "https://riftradio-261b2-default-rtdb.firebaseio.com/", 
 projectId: "riftradio-261b2", 
 storageBucket: "riftradio-261b2.appspot.com", 
 messagingSenderId: "1090281308108", 
