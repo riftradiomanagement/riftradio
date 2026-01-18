@@ -1,27 +1,36 @@
 const player = document.getElementById("radioPlayer");
 const playBtn = document.getElementById("playBtn");
-const playState = document.getElementById("playState");
-const trackTitle = document.getElementById("trackTitle");
-const listenerCount = document.getElementById("listenerCount");
+const statusDot = document.getElementById("statusDot");
+const statusText = document.getElementById("statusText");
 
 let playing = false;
 
-/* =====================
-   PLAY / PAUSE
-===================== */
+/* PLAY / PAUSE */
 playBtn.addEventListener("click", () => {
   if (!playing) {
     player.play();
     playBtn.textContent = "❚❚";
-    playState.textContent = "Live";
     playing = true;
   } else {
     player.pause();
     playBtn.textContent = "▶";
-    playState.textContent = "Paused";
     playing = false;
   }
 });
+
+/* LOAD STATUS FROM LOCALSTORAGE */
+function loadStatus() {
+  const saved = localStorage.getItem("radioStatus");
+  if (saved) {
+    const { text, color } = JSON.parse(saved);
+    statusText.textContent = text;
+    statusDot.style.backgroundColor = color;
+    statusDot.style.boxShadow = `0 0 12px ${color}`;
+  }
+}
+
+window.addEventListener("load", loadStatus);
+
 
 /* =====================
    AZURACAST API
