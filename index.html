@@ -4,58 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rift Radio</title>
-
-  <!-- Versioned CSS -->
   <link rel="stylesheet" href="assets/css/v1.css" />
 </head>
 <body>
 
-  <!-- Ambient animated background -->
+  <!-- Ambient background -->
   <div class="ambient"></div>
 
-  <!-- Main glass card -->
+  <!-- Main glass container -->
   <main class="glass">
     <h1 class="brand">Rift Radio</h1>
     <p class="tagline">Independent sounds. Always on.</p>
 
-    <!-- Player -->
-<div class="player">
-  <button id="playBtn" class="play-btn">
-    ▶
-  </button>
+    <!-- Audio Player -->
+    <div class="player">
+      <button id="playBtn" class="play-btn">▶</button>
+      <audio id="radioPlayer" preload="none">
+        <source src="https://YOUR_AZURACAST_URL/radio/8000/radio.mp3" type="audio/mpeg">
+      </audio>
+    </div>
 
-  <audio id="radioPlayer" preload="none">
-    <source src="https://YOUR_AZURACAST_URL/radio/8000/radio.mp3" type="audio/mpeg">
-  </audio>
-</div>
-
-    <!-- Status -->
-<div class="now-playing">
-  <span class="label">Now Playing</span>
-  <span id="trackTitle">Loading…</span>
-</div>
-
-<div class="stats">
-  <div class="status">
-    <span class="pulse"></span>
-    <span id="playState">Offline</span>
-  </div>
-
-  <div class="listeners">
-    👂 <span id="listenerCount">0</span>
-  </div>
-</div>
+    <!-- STATUS SECTION -->
+    <div class="status">
+      <span id="statusDot" class="pulse"></span>
+      <span id="statusText">Offline</span>
+    </div>
   </main>
 
-  <!-- Footer -->
-  <footer>
-    © 2026 Rift Radio
-  </footer>
+  <footer>© 2026 Rift Radio</footer>
 
-  <!-- Versioned JS -->
+  <!-- Main JS -->
   <script src="assets/js/v1.js"></script>
-
-  <div class="noise"></div>
-
 </body>
 </html>
