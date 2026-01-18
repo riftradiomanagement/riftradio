@@ -16,15 +16,22 @@ const db = firebase.database();
 // Elements
 const player = document.getElementById("radioPlayer");
 const playBtn = document.getElementById("playBtn");
-const statusDot = document.getElementById("statusDot");
-const statusText = document.getElementById("statusText");
+let playing = false;
 
-// Play/Pause
-let playing=false;
-playBtn.addEventListener("click",()=>{
-  if(!playing){player.play();playBtn.textContent="❚❚";playing=true;}
-  else{player.pause();playBtn.textContent="▶";playing=false;}
-});
+// Only add play/pause if the element exists (main page)
+if(playBtn && player){
+  playBtn.addEventListener("click", () => {
+    if(!playing){
+      player.play();
+      playBtn.textContent = "❚❚";
+      playing = true;
+    } else {
+      player.pause();
+      playBtn.textContent = "▶";
+      playing = false;
+    }
+  });
+}
 
 // Listen for global status changes
 db.ref("status").on("value", snapshot=>{
