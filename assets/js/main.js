@@ -12,106 +12,82 @@ appId: "1:1090281308108:web:fda907d270875dcb3ae769"
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-let player, isPlaying = false;
 
-// DEFAULT PLACEHOLDER
-let playlistId = "YOUR_PLAYLIST_ID_HERE";
+/* ============================
+   YOUTUBE PLAYER
+   ============================ */
 
-/* ===== YOUTUBE ===== */
+const PLAYLIST_ID = "YOUR_PLAYLIST_ID_HERE";
+
+let player = null;
+let isPlaying = false;
+
 function onYouTubeIframeAPIReady() {
   player = new YT.Player("yt-player", {
     height: "1",
     width: "1",
     playerVars: {
       listType: "playlist",
-      list: playlistId,
+      list: PLAYLIST_ID,
+      autoplay: 0,
       controls: 0
     },
-    events: { onStateChange }
+    events: {
+      onStateChange: onPlayerStateChange
+    }
   });
 }
 
-function onStateChange(e) {
+function onPlayerStateChange(e) {
+  const playBtn = document.getElementById("playBtn");
   const title = document.getElementById("trackTitle");
   const cover = document.getElementById("cover");
-  const playBtn = document.getElementById("playBtn");
 
   if (e.data === YT.PlayerState.PLAYING) {
     isPlaying = true;
     playBtn.textContent = "❚❚";
 
     const data = player.getVideoData();
-    title.textContent = data.title;
+    title.textContent = data.title || "Now Playing";
 
     cover.style.backgroundImage =
       `url(https://img.youtube.com/vi/${data.video_id}/hqdefault.jpg)`;
   }
 
-  if (e.data === YT.PlayerState.PAUSED) {
+  if (e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED) {
     isPlaying = false;
     playBtn.textContent = "▶";
   }
 }
 
-/* ===== PLAY BUTTON ===== */
+/* ============================
+   DOM READY
+   ============================ */
+
 document.addEventListener("DOMContentLoaded", () => {
+
+  /* PLAY BUTTON */
   const playBtn = document.getElementById("playBtn");
   if (playBtn) {
-    playBtn.onclick = () =>
+    playBtn.addEventListener("click", () => {
+      if (!player) return;
       isPlaying ? player.pauseVideo() : player.playVideo();
+    });
   }
 
-  /* ===== STATUS SYNC ===== */
-  db.ref("status").on("value", s => {
-    const d = s.val();
-    if (!d) return;
-    statusText.textContent = d.text;
-    statusDot.style.background = d.color;
-    statusDot.style.boxShadow = `0 0 12px ${d.color}`;
+  /* STATUS LISTENER */
+  const statusText = document.getElementById("statusText");
+  const statusDot = document.getElementById("statusDot");
+
+  db.ref("status").on("value", snap => {
+    const data = snap.val();
+    if (!data) return;
+
+    statusText.textContent = data.text;
+    statusDot.style.background = data.color;
+    statusDot.style.boxShadow = `0 0 12px ${data.color}`;
+
+    document.documentElement.style.setProperty("--neon", data.color);
   });
 
-  setupAdmin();
-  setupKeyboard();
 });
-
-/* ===== KEYBOARD SHORTCUTS ===== */
-function setupKeyboard() {
-  document.addEventListener("keydown", e => {
-    if (e.code === "Space") {
-      e.preventDefault();
-      isPlaying ? player.pauseVideo() : player.playVideo();
-    }
-    if (e.code === "ArrowRight") {
-      player.nextVideo();
-    }
-  });
-}
-
-/* ===== ADMIN ===== */
-function setupAdmin() {
-  const loginBtn = document.getElementById("loginBtn");
-  if (!loginBtn) return;
-
-  loginBtn.onclick = async () => {
-    const pass = adminPassword.value;
-    const snap = await db.ref("status/adminKey").get();
-    if (snap.val() === pass) alert("Admin unlocked");
-  };
-
-  updateStatusBtn.onclick = () => {
-    const text =
-      statusPreset.value === "custom"
-        ? customStatus.value
-        : statusPreset.value;
-
-    db.ref("status").update({
-      text,
-      color: statusColor.value
-    });
-  };
-
-  updatePlaylistBtn.onclick = () => {
-    playlistId = playlistInput.value;
-    db.ref("playlist").set({ id: playlistId });
-    location.reload();
-  };
