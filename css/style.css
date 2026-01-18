@@ -1,0 +1,92 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body with animated shiny black background */
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: linear-gradient(135deg, #111111, #1a1a1a, #111111);
+  background-size: 400% 400%;
+  animation: gradientAnimation 15s ease infinite;
+  color: #eaeaf0;
+}
+
+/* Gradient animation */
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Center glass box */
+.center-box {
+  background: rgba(255, 255, 255, 0.05); /* glass effect */
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  padding: 2rem;
+  width: 350px;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  animation: fadeIn 1s ease;
+}
+
+/* Fade-in animation for modern look */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(-10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Heading and paragraph in center box */
+.center-box h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  color: #ffffff;
+}
+
+.center-box p {
+  margin-bottom: 1.5rem;
+  opacity: 0.8;
+  font-size: 1rem;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  opacity: 0.6;
+  margin-top: 2rem;
+  position: absolute;
+  bottom: 1rem;
+  width: 100%;
+}
+
+/* Responsive iframe (AzuraCast) */
+iframe {
+  border-radius: 12px;
+  max-width: 100%;
+}
+
+/* Mobile adjustments */
+@media (max-width: 400px) {
+  .center-box {
+    padding: 1.5rem;
+    width: 90%;
+  }
+
+  .center-box h1 {
+    font-size: 1.6rem;
+  }
+
+  .center-box p {
+    font-size: 0.9rem;
+  }
+}
