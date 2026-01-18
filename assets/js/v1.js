@@ -1,12 +1,19 @@
-// v1.js
-// Reserved for future AzuraCast metadata, live song titles, listeners, etc.
-
 const player = document.getElementById("radioPlayer");
+const playBtn = document.getElementById("playBtn");
+const statusText = document.querySelector(".status");
 
-player.addEventListener("play", () => {
-  console.log("Radio started");
-});
+let playing = false;
 
-player.addEventListener("pause", () => {
-  console.log("Radio paused");
+playBtn.addEventListener("click", () => {
+  if (!playing) {
+    player.play();
+    playBtn.textContent = "❚❚";
+    statusText.lastChild.textContent = " Live broadcast";
+    playing = true;
+  } else {
+    player.pause();
+    playBtn.textContent = "▶";
+    statusText.lastChild.textContent = " Paused";
+    playing = false;
+  }
 });
