@@ -1,49 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin - Rift Radio</title>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <meta charset="UTF-8">
+  <title>Rift Radio Admin</title>
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
-<body>
+<body class="admin">
 
-  <div class="ambient"></div>
+  <div class="radio-card admin-card">
 
-  <main class="glass" id="adminPanel" style="display:none;">
-    <h1>Admin Panel</h1>
+    <h2>Admin Panel</h2>
 
-    <!-- Status Control -->
-    <label for="presetStatus">Preset Status:</label>
-    <select id="presetStatus">
-      <option value="">--Select--</option>
-      <option value="Live|#4cff9b">Live</option>
-      <option value="Offline|#ff3b3b">Offline</option>
-      <option value="Maintenance|#ffae42">Maintenance</option>
-    </select>
-
-    <p>Or custom:</p>
-    <input type="text" id="customStatus" placeholder="Custom status" />
-    <input type="color" id="customColor" value="#ffffff" />
-    <br/>
-    <button id="saveStatus">Save Status</button>
+    <input id="adminPassword" placeholder="Admin password">
+    <button id="loginBtn">Login</button>
 
     <hr>
 
-    <!-- Spotify Track Control -->
-    <h2>Spotify Player Control</h2>
-    <input type="text" id="trackName" placeholder="Song Name" />
-    <input type="text" id="trackArtist" placeholder="Artist Name" />
-    <input type="text" id="trackCover" placeholder="Cover Image URL" />
-    <br/>
-    <button id="saveTrack">Update Track</button>
-    <button id="togglePlay">Play / Pause</button>
-  </main>
+    <h3>Status</h3>
+    <select id="statusPreset">
+      <option value="Live">Live</option>
+      <option value="Offline">Offline</option>
+      <option value="Event">Event</option>
+      <option value="custom">Custom</option>
+    </select>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="assets/js/main.js"></script>
+    <input id="customStatus" placeholder="Custom status">
+    <input type="color" id="statusColor" value="#00ffff">
+    <button id="updateStatusBtn">Update Status</button>
+
+    <hr>
+
+    <h3>YouTube Playlist</h3>
+    <input id="playlistInput" placeholder="Playlist ID">
+    <button id="updatePlaylistBtn">Update Playlist</button>
+
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
-
