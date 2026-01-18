@@ -5,33 +5,43 @@
   <title>Rift Radio</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 
-  <!-- YouTube IFrame API -->
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+  <!-- YouTube API -->
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 <body>
 
-  <main class="app">
-    <section class="player">
+  <div class="app">
+    <div class="radio-card">
 
-      <div class="cover">
+      <!-- STATUS -->
+      <div class="status">
+        <span id="statusDot"></span>
+        <span id="statusText">Loading…</span>
+      </div>
+
+      <!-- COVER -->
+      <div class="cover" id="cover">
         <button id="playBtn">▶</button>
       </div>
 
+      <!-- INFO -->
       <div class="info">
-        <h1 id="trackTitle">Waiting for playlist…</h1>
-        <p class="subtitle">Live Radio</p>
+        <h2 id="trackTitle">Waiting for stream…</h2>
+        <p>Rift Radio</p>
       </div>
 
-    </section>
-  </main>
+    </div>
+  </div>
 
-  <!-- Hidden YouTube player -->
+  <!-- Hidden YouTube -->
   <div id="yt-player"></div>
 
-  <!-- Script -->
   <script src="main.js"></script>
 </body>
 </html>
